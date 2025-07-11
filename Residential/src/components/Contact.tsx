@@ -12,6 +12,7 @@ export default function Contact() {
     inquiryType: 'sell'
   });
 
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real application, you would send this data to your backend
