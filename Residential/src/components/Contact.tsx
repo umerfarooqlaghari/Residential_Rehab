@@ -15,7 +15,6 @@ export default function Contact() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, you would send this data to your backend
     console.log('Form submitted:', formData);
     alert('Thank you for your inquiry! We will contact you within 24 hours.');
     setFormData({
@@ -215,7 +214,7 @@ export default function Contact() {
                   <svg className="w-4 h-4 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  25+ years of proven experience
+                  29+ years of proven experience
                 </li>
                 <li className="flex items-center">
                   <svg className="w-4 h-4 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">

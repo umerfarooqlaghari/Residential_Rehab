@@ -17,8 +17,7 @@ export default function Hero() {
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Trusted expertise in South Florida property investment since 1996. 
-            We acquire, manage, and hold premium real estate assets along the east coast.
+            We understand that your home is more than just a property it's where life happens. Since 1996, we've been proud to support homeowners across South Florida with trusted guidance, care-driven property solutions, and long-term stability.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -26,7 +25,7 @@ export default function Hero() {
               onClick={scrollToContact}
               className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
             >
-              Get Started Today
+              Get Your Offer Now
             </button>
             
             <button
@@ -44,18 +43,18 @@ export default function Hero() {
           
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-3xl font-bold text-blue-600 mb-2">25+</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">30</div>
               <div className="text-gray-700">Years of Experience</div>
             </div>
             
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
-              <div className="text-gray-700">Properties Acquired</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">200+</div>
+              <div className="text-gray-700">Home owners Helped</div>
             </div>
             
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="text-3xl font-bold text-blue-600 mb-2">100%</div>
-              <div className="text-gray-700">Client Satisfaction</div>
+              <div className="text-gray-700">Owner Satisfaction</div>
             </div>
           </div>
         </div>

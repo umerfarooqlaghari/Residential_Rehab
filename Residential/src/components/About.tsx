@@ -18,10 +18,9 @@ export default function About() {
             </h3>
             
             <p className="text-lg text-gray-700 leading-relaxed">
-              For over 25 years, Presidential Real Estate Holdings has been a cornerstone 
-              of South Florida's real estate market. Since 1996, we have successfully 
-              acquired hundreds of homes along South Florida's prestigious east coast, 
-              building a reputation for excellence and reliability.
+For nearly three decades, Presidential Real Estate Holdings has proudly served the homeowners of South Florida with care, integrity, and dedication. Since 1996, we've helped hundreds of families transition through life&apos;s changes offering solutions that are fast, fair, and respectful of what home truly means.
+
+Rooted in the heart of South Florida&apos;s east coast, our deep local knowledge and reliable track record have made us a trusted partner for those looking to sell with peace of mind — and for those looking to invest in the future of our thriving communities.
             </p>
             
             <p className="text-lg text-gray-700 leading-relaxed">
@@ -67,11 +66,11 @@ export default function About() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span>Years in Business</span>
-                  <span className="text-2xl font-bold">25+</span>
+                  <span className="text-2xl font-bold">30</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span>Properties Acquired</span>
-                  <span className="text-2xl font-bold">500+</span>
+                  <span>Home Owners Helped</span>
+                  <span className="text-2xl font-bold">200+</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Market Focus</span>
@@ -87,9 +86,9 @@ export default function About() {
             <div className="bg-gray-50 p-6 rounded-lg">
               <h4 className="text-xl font-semibold text-blue-900 mb-3">Our Mission</h4>
               <p className="text-gray-700">
-                To provide property owners with fast, fair, and reliable real estate 
-                solutions while building a portfolio of premium properties that 
-                contribute to South Florida's growth and development.
+To support homeowners with fast, fair, and trustworthy real estate solutions whether you're navigating change, seeking peace of mind, or ready for a fresh start. At the same time, we are committed to strengthening South Florida communities by investing in quality properties that foster long-term growth and value.
+
+
               </p>
             </div>
           </div>

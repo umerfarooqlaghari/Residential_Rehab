@@ -7,10 +7,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">Presidential Real Estate</h3>
+            <h3 className="text-2xl font-bold mb-4">Residential Rehab</h3>
             <p className="text-blue-200 mb-4">
-              Professional real estate acquisitions and holdings company serving 
-              South Florida's east coast since 1996.
+We&apos;re a trusted real estate company focused on helping property owners find fair, stress-free solutions whether you're ready to sell, need guidance, or simply exploring your options.
             </p>
             <p className="text-blue-200">
               Trusted expertise. Proven results. Your success is our priority.
