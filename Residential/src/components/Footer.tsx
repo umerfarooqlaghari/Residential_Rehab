@@ -62,6 +62,19 @@ We&apos;re a trusted real estate company focused on helping property owners find
               <li>
                 <button
                   onClick={() => {
+                    const element = document.getElementById('faq');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="text-blue-200 hover:text-white transition-colors duration-200"
+                >
+                  FAQ
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
                     const element = document.getElementById('contact');
                     if (element) {
                       element.scrollIntoView({ behavior: 'smooth' });
