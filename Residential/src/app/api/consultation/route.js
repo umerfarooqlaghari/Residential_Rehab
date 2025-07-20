@@ -94,6 +94,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb.js';
 import Consultation from '@/models/Consultation.js';
+import { sendConsultationAutoReply } from '@/lib/email.js';
 
 // ---------------- POST: Create consultation ----------------
 export async function POST(req) {
@@ -130,6 +131,22 @@ export async function POST(req) {
     });
 
     const savedConsultation = await consultation.save();
+
+    // Send automated email reply to user
+    console.log('🚀 Starting email sending process for:', savedConsultation.email);
+    try {
+      const emailResult = await sendConsultationAutoReply({
+        to: savedConsultation.email,
+        name: savedConsultation.name,
+        inquiryType: savedConsultation.inquiryType,
+        message: savedConsultation.message || '',
+        propertyAddress: savedConsultation.propertyAddress || ''
+      });
+      console.log('✅ Auto-reply email sent successfully:', emailResult.messageId || 'API response received');
+    } catch (emailError) {
+      console.error('❌ Failed to send auto-reply email:', emailError.message);
+      // Do not fail the request if email sending fails
+    }
 
     return NextResponse.json({
       success: true,

@@ -9,7 +9,7 @@ This document explains the automated email system for the Residential Rehab cont
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
 - **Brand Alignment**: Matches your website's blue color scheme (#1e3a8a, #2563eb)
 - **Professional Layout**: Clean, modern design with proper typography
-- **Company Branding**: Features "Residential Rehab" and "Presidential Real Estate Holdings"
+- **Company Branding**: Features "Residential Rehab" and "Residential Real Estate Holdings"
 
 ### 📧 Email Content
 - **Personalized Greeting**: Uses the customer's name

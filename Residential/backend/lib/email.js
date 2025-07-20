@@ -305,7 +305,7 @@ function createEmailTemplate({ name, inquiryType, message, propertyAddress }) {
         <!-- Footer -->
         <div class="footer">
           <div class="company-name">Residential Rehab</div>
-          <p>Presidential Real Estate Holdings</p>
+          <p>Residential Real Estate Holdings</p>
           <p>Serving South Florida's East Coast Since 1996</p>
           <p>Trusted Expertise • Proven Results • Your Success is Our Priority</p>
         </div>
