@@ -90,6 +90,7 @@
 //   }
 // }
 
+
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb.js';
 import Consultation from '@/models/Consultation.js';
