@@ -33,6 +33,12 @@ export default function Header() {
               Home
             </button>
             <button
+              onClick={() => scrollToSection('situations')}
+              className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
+            >
+              Situations We Help Resolve
+            </button>
+            <button
               onClick={() => scrollToSection('about')}
               className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
             >
@@ -78,6 +84,12 @@ export default function Header() {
                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-left"
               >
                 Home
+              </button>
+              <button
+                onClick={() => scrollToSection('situations')}
+                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-left"
+              >
+                Situations We Help Resolve
               </button>
               <button
                 onClick={() => scrollToSection('about')}

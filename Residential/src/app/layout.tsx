@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Presidential Real Estate Holdings | South Florida Property Acquisitions",
+  title: "Residential Rehab Inc | South Florida Property Acquisitions",
   description: "Professional real estate acquisitions and holdings company serving South Florida's east coast since 1996. Trusted expertise in property investment and management.",
 };
 

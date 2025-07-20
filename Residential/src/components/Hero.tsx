@@ -48,7 +48,7 @@ export default function Hero() {
             </div>
             
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-3xl font-bold text-blue-600 mb-2">200+</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
               <div className="text-gray-700">Home owners Helped</div>
             </div>
             
