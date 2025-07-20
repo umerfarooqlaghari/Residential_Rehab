@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Consultation from '@/models/Consultation';
+import { sendConsultationAutoReply } from '@/lib/email';
 
 // POST - Create a new consultation request
 export async function POST(request) {
@@ -60,6 +61,19 @@ export async function POST(request) {
 
     // Save to database
     const savedConsultation = await consultation.save();
+
+    // Send automated email reply to user
+    try {
+      await sendConsultationAutoReply({
+        to: savedConsultation.email,
+        name: savedConsultation.name,
+        inquiryType: savedConsultation.inquiryType,
+        message: savedConsultation.message || ''
+      });
+    } catch (emailError) {
+      console.error('Failed to send auto-reply email:', emailError);
+      // Do not fail the request if email sending fails
+    }
 
     // Return success response
     return NextResponse.json(
