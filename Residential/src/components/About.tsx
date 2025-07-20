@@ -18,7 +18,7 @@ export default function About() {
             </h3>
             
             <p className="text-lg text-gray-700 leading-relaxed">
-For nearly three decades, Presidential Real Estate Holdings has proudly served the homeowners of South Florida with care, integrity, and dedication. Since 1996, we've helped hundreds of families transition through life&apos;s changes offering solutions that are fast, fair, and respectful of what home truly means.
+For nearly three decades, Residential Rehab Inc has proudly served the homeowners of South Florida with care, integrity, and dedication. Since 1996, we've helped hundreds of families transition through life&apos;s changes offering solutions that are fast, fair, and respectful of what home truly means.
 
 Rooted in the heart of South Florida&apos;s east coast, our deep local knowledge and reliable track record have made us a trusted partner for those looking to sell with peace of mind — and for those looking to invest in the future of our thriving communities.
             </p>
@@ -70,7 +70,7 @@ Rooted in the heart of South Florida&apos;s east coast, our deep local knowledge
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Home Owners Helped</span>
-                  <span className="text-2xl font-bold">200+</span>
+                  <span className="text-2xl font-bold">500+</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Market Focus</span>
