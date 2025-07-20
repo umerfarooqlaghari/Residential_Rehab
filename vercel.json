@@ -1,0 +1,11 @@
+{
+  "buildCommand": "cd Residential && npm run build",
+  "outputDirectory": "Residential/.next",
+  "installCommand": "cd Residential && npm install",
+  "framework": "nextjs",
+  "functions": {
+    "Residential/backend/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
