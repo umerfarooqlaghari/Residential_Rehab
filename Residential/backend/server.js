@@ -50,5 +50,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
+  console.log(`🚀 Backend server running on port ${PORT}`);
+  console.log(`📧 Email configuration loaded`);
 });

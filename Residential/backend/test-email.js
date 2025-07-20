@@ -11,7 +11,7 @@ async function testEmail() {
   
   try {
     const testData = {
-      to: 'test@example.com', // Replace with your test email
+      to: 'sales@residentialrehabgroup.com', // Using the business email for testing
       name: 'John Doe',
       inquiryType: 'sell',
       message: 'I am interested in selling my property quickly. It needs some repairs but I want to get a fair offer.',

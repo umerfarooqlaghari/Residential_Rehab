@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo -p 3000",
+    "dev:3001": "next dev --turbo -p 3001",
     "build": "next build",
     "start": "next start -p 3000",
+    "start:3001": "next start -p 3001",
     "lint": "next lint",
     "dev:backend": "cd backend && npm run dev",
     "dev:full": "concurrently \"npm run dev:backend\" \"npm run dev\"",
+    "dev:full:3001": "concurrently \"npm run dev:backend\" \"npm run dev:3001\"",
     "build:backend": "cd backend && npm run build",
     "start:backend": "cd backend && npm start"
   },

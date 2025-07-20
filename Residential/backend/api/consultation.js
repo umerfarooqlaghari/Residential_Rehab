@@ -55,6 +55,7 @@ router.post('/', async (req, res) => {
     const savedConsultation = await consultation.save();
 
     // Send automated email reply to user
+    console.log('🚀 Starting email sending process for:', savedConsultation.email);
     try {
       const emailResult = await sendConsultationAutoReply({
         to: savedConsultation.email,
@@ -63,9 +64,9 @@ router.post('/', async (req, res) => {
         message: savedConsultation.message || '',
         propertyAddress: savedConsultation.propertyAddress || ''
       });
-      console.log('Auto-reply email sent successfully:', emailResult.messageId || 'API response received');
+      console.log('✅ Auto-reply email sent successfully:', emailResult.messageId || 'API response received');
     } catch (emailError) {
-      console.error('Failed to send auto-reply email after all attempts:', emailError.message);
+      console.error('❌ Failed to send auto-reply email after all attempts:', emailError.message);
       // Do not fail the request if email sending fails
     }
 
