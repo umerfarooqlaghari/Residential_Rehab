@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5001';
-
+// const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5001';
+const BACKEND_URL = 'https://residential-rehab-bdyh.vercel.app'
 // POST - Admin Login (proxy to backend)
 export async function POST(request) {
   try {
