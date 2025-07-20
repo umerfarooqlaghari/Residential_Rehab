@@ -1,33 +1,59 @@
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import connectDB from '@/lib/mongodb.js';
+import Admin from '@/models/Admin.js';
 
-// const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5001';
-const BACKEND_URL = 'https://residential-rehab-bdyh.vercel.app'
-
-// POST - Create default admin (proxy to backend)
+// POST - Create default admin
 export async function POST(request) {
   try {
-    const body = await request.json();
+    await connectDB();
 
-    const response = await fetch(`${BACKEND_URL}/api/admin/setup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
+    // Check if admin already exists
+    const existingAdmin = await Admin.findOne();
+    if (existingAdmin) {
+      return NextResponse.json({
+        success: false,
+        error: 'Admin already exists'
+      }, { status: 400 });
+    }
+
+    const body = await request.json();
+    const { name, email, password } = body;
+
+    if (!name || !email || !password) {
+      return NextResponse.json({
+        success: false,
+        error: 'Name, email, and password are required'
+      }, { status: 400 });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // Create admin
+    const admin = new Admin({
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password: hashedPassword
     });
 
-    const data = await response.json();
+    await admin.save();
 
-    return NextResponse.json(data, { status: response.status });
+    return NextResponse.json({
+      success: true,
+      message: 'Admin created successfully',
+      admin: {
+        id: admin._id,
+        name: admin.name,
+        email: admin.email
+      }
+    }, { status: 201 });
 
   } catch (error) {
-    console.error('Error proxying admin setup:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to setup admin. Please try again later.'
-      },
-      { status: 500 }
-    );
+    console.error('Admin setup error:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Internal server error'
+    }, { status: 500 });
   }
 }
