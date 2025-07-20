@@ -1,10 +1,13 @@
 // Test script to verify email functionality
 // Run with: node test-email.js
 
-import { sendConsultationAutoReply } from './src/lib/email.js';
+import { sendConsultationAutoReply } from './lib/email.js';
+import config from './config.js';
 
 async function testEmail() {
   console.log('🧪 Testing email functionality...');
+  console.log('📧 SMTP User:', config.SMTP_USER);
+  console.log('🔑 SMTP Pass:', config.SMTP_PASS ? '***' + config.SMTP_PASS.slice(-4) : 'NOT SET');
   
   try {
     const testData = {

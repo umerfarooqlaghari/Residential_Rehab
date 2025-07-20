@@ -1,19 +1,19 @@
 {
-  "name": "presidential-real-estate",
+  "name": "residential-rehab-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:full": "concurrently \"npm run dev:backend\" \"npm run dev\"",
+    "build:backend": "cd backend && npm run build",
+    "start:backend": "cd backend && npm start"
   },
   "dependencies": {
-    "@types/nodemailer": "^6.4.17",
-    "bcryptjs": "^3.0.2",
-    "mongoose": "^8.16.3",
     "next": "15.3.5",
-    "nodemailer": "^7.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -23,6 +23,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "concurrently": "^8.2.2"
   }
 }

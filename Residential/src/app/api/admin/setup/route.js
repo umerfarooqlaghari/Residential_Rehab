@@ -1,87 +1,30 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import Admin from '@/models/Admin';
 
-// POST - Create default admin (one-time setup)
-export async function POST() {
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
+
+// POST - Create default admin (proxy to backend)
+export async function POST(request) {
   try {
-    // Connect to database
-    await connectDB();
+    const body = await request.json();
 
-    // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email: 'ak1096561@gmail.com' });
-    
-    if (existingAdmin) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Admin already exists' 
-        },
-        { status: 409 }
-      );
-    }
-
-    // Create default admin
-    const defaultAdmin = new Admin({
-      username: 'admin',
-      email: 'ak1096561@gmail.com',
-      phone: '+1234567890',
-      password: 'Anaskhan123',
-      admin: true
+    const response = await fetch(`${BACKEND_URL}/api/admin/setup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
     });
 
-    // Save to database (password will be automatically hashed)
-    const savedAdmin = await defaultAdmin.save();
+    const data = await response.json();
 
-    // Return success response
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Default admin created successfully',
-        admin: {
-          id: savedAdmin._id,
-          username: savedAdmin.username,
-          email: savedAdmin.email,
-          phone: savedAdmin.phone,
-          admin: savedAdmin.admin,
-          createdAt: savedAdmin.createdAt
-        }
-      },
-      { status: 201 }
-    );
+    return NextResponse.json(data, { status: response.status });
 
   } catch (error) {
-    console.error('Error creating default admin:', error);
-
-    // Handle mongoose validation errors
-    if (error.name === 'ValidationError') {
-      const validationErrors = Object.values(error.errors).map(err => err.message);
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Validation failed',
-          details: validationErrors
-        },
-        { status: 400 }
-      );
-    }
-
-    // Handle duplicate key error
-    if (error.code === 11000) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Admin with this email already exists' 
-        },
-        { status: 409 }
-      );
-    }
-
-    // Handle other errors
+    console.error('Error proxying admin setup:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Internal server error' 
+      {
+        success: false,
+        error: 'Failed to setup admin. Please try again later.'
       },
       { status: 500 }
     );

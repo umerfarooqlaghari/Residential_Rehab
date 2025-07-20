@@ -2,12 +2,11 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const AdminSchema = new mongoose.Schema({
-  username: {
+  name: {
     type: String,
-    required: [true, 'Username is required'],
+    required: [true, 'Name is required'],
     trim: true,
-    unique: true,
-    maxlength: [50, 'Username cannot be more than 50 characters']
+    maxlength: [100, 'Name cannot be more than 100 characters']
   },
   email: {
     type: String,
@@ -17,21 +16,10 @@ const AdminSchema = new mongoose.Schema({
     unique: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
   },
-  phone: {
-    type: String,
-    required: [true, 'Phone number is required'],
-    trim: true,
-    maxlength: [20, 'Phone number cannot be more than 20 characters']
-  },
   password: {
     type: String,
     required: [true, 'Password is required'],
     minlength: [6, 'Password must be at least 6 characters']
-  },
-  admin: {
-    type: Boolean,
-    default: true,
-    required: true
   },
   createdAt: {
     type: Date,
@@ -74,6 +62,5 @@ AdminSchema.methods.comparePassword = async function(candidatePassword) {
 
 // Create indexes for better query performance
 AdminSchema.index({ email: 1 });
-AdminSchema.index({ username: 1 });
 
 export default mongoose.models.Admin || mongoose.model('Admin', AdminSchema);

@@ -1,21 +1,31 @@
 import nodemailer from 'nodemailer';
+import config from '../config.js';
 
-const smtpUser = process.env.SMTP_USER;
-const smtpPass = process.env.SMTP_PASS;
-// If you need the API key elsewhere, use: process.env.BREVO_API_KEY
+const smtpUser = config.SMTP_USER;
+const smtpPass = config.SMTP_PASS;
+const brevoApiKey = config.BREVO_API_KEY;
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: smtpUser,
-    pass: smtpPass,
-  },
-  tls: {
-    ciphers: 'TLSv1.2', 
-  }
-});
+// Try multiple SMTP configurations
+const createTransporter = () => {
+  // Configuration 1: Brevo SMTP with TLS
+  const config1 = {
+    host: 'smtp-relay.brevo.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
+    tls: {
+      ciphers: 'TLSv1.2',
+      rejectUnauthorized: false
+    }
+  };
+
+  return nodemailer.createTransport(config1);
+};
+
+const transporter = createTransporter();
 
 // Helper function to format inquiry type for display
 function formatInquiryType(inquiryType) {
@@ -305,52 +315,73 @@ function createEmailTemplate({ name, inquiryType, message, propertyAddress }) {
   `;
 }
 
-export async function sendConsultationAutoReply({ to, name, inquiryType, message, propertyAddress }) {
+// Fallback function using Brevo API
+async function sendEmailViaBrevoAPI({ to, name, inquiryType, message, propertyAddress }) {
   const formattedInquiryType = formatInquiryType(inquiryType);
 
-  // Create plain text version for email clients that don't support HTML
-  const textContent = `
+  const emailData = {
+    sender: {
+      name: "Residential Rehab",
+      email: "sales@residentialrehabgroup.com"
+    },
+    to: [
+      {
+        email: to,
+        name: name
+      }
+    ],
+    subject: `Thank You for Your ${formattedInquiryType} - We'll Respond Within 24 Hours`,
+    htmlContent: createEmailTemplate({ name, inquiryType, message, propertyAddress }),
+    textContent: `
 Hello ${name},
 
 Thank you for reaching out to Residential Rehab! We've successfully received your inquiry and truly appreciate you considering us for your real estate needs.
 
 WHAT HAPPENS NEXT?
-We'll get back to you within 24 hours with a personalized response tailored to your specific situation. Our experienced team will review your inquiry and provide you with the guidance and solutions you're looking for.
+We'll get back to you within 24 hours with a personalized response tailored to your specific situation.
 
 YOUR INQUIRY SUMMARY:
 - Inquiry Type: ${formattedInquiryType}
 ${propertyAddress ? `- Property Address: ${propertyAddress}` : ''}
 ${message ? `- Your Message: ${message}` : ''}
-- Submitted: ${new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })}
 
 FOR URGENT MATTERS:
 📞 Call us now: 561-889-6041
 ✉️ Email us: sales@residentialrehabgroup.com
 
-Your home is more than just a property – it's where life happens. We understand this, and we're committed to providing you with care-driven solutions that respect what home truly means to you.
-
-With nearly three decades of experience serving South Florida homeowners, we've helped hundreds of families transition through life's changes with solutions that are fast, fair, and respectful. Your success is our priority.
-
 Best regards,
 Residential Rehab Team
-Presidential Real Estate Holdings
-Serving South Florida's East Coast Since 1996
-  `;
-
-  const mailOptions = {
-    from: 'sales@residentialrehabgroup.com',
-    to,
-    subject: `Thank You for Your ${formattedInquiryType} - We'll Respond Within 24 Hours`,
-    text: textContent,
-    html: createEmailTemplate({ name, inquiryType, message, propertyAddress })
+    `
   };
 
-  return transporter.sendMail(mailOptions);
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'api-key': brevoApiKey
+    },
+    body: JSON.stringify(emailData)
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Brevo API Error: ${errorData.message || response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+export async function sendConsultationAutoReply({ to, name, inquiryType, message, propertyAddress }) {
+  // Use Brevo API directly since SMTP credentials are not working
+  console.log('Sending email via Brevo API to:', to);
+
+  try {
+    const result = await sendEmailViaBrevoAPI({ to, name, inquiryType, message, propertyAddress });
+    console.log('Email sent successfully via Brevo API');
+    return result;
+  } catch (apiError) {
+    console.error('Brevo API failed:', apiError.message);
+    throw new Error(`Email sending failed: ${apiError.message}`);
+  }
 }

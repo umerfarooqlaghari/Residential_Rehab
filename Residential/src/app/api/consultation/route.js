@@ -1,179 +1,55 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import Consultation from '@/models/Consultation';
-import { sendConsultationAutoReply } from '@/lib/email';
 
-// POST - Create a new consultation request
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
+
+// POST - Create a new consultation request (proxy to backend)
 export async function POST(request) {
   try {
-    // Connect to database
-    await connectDB();
-
-    // Parse request body
     const body = await request.json();
-    const { name, email, phone, propertyAddress, inquiryType, message } = body;
 
-    // Validate required fields
-    if (!name || !email || !phone || !inquiryType) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Missing required fields: name, email, phone, and inquiry type are required' 
-        },
-        { status: 400 }
-      );
-    }
-
-    // Validate email format
-    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Please provide a valid email address' 
-        },
-        { status: 400 }
-      );
-    }
-
-    // Validate inquiry type
-    const validInquiryTypes = ['sell', 'invest', 'other'];
-    if (!validInquiryTypes.includes(inquiryType)) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Invalid inquiry type' 
-        },
-        { status: 400 }
-      );
-    }
-
-    // Create new consultation record
-    const consultation = new Consultation({
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      phone: phone.trim(),
-      propertyAddress: propertyAddress ? propertyAddress.trim() : '',
-      inquiryType,
-      message: message ? message.trim() : '',
-      status: 'new'
+    const response = await fetch(`${BACKEND_URL}/api/consultation`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
     });
 
-    // Save to database
-    const savedConsultation = await consultation.save();
+    const data = await response.json();
 
-    // Send automated email reply to user
-    try {
-      await sendConsultationAutoReply({
-        to: savedConsultation.email,
-        name: savedConsultation.name,
-        inquiryType: savedConsultation.inquiryType,
-        message: savedConsultation.message || '',
-        propertyAddress: savedConsultation.propertyAddress || ''
-      });
-    } catch (emailError) {
-      console.error('Failed to send auto-reply email:', emailError);
-      // Do not fail the request if email sending fails
-    }
-
-    // Return success response
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Consultation request submitted successfully',
-        data: {
-          id: savedConsultation._id,
-          name: savedConsultation.name,
-          email: savedConsultation.email,
-          inquiryType: savedConsultation.inquiryType,
-          createdAt: savedConsultation.createdAt
-        }
-      },
-      { status: 201 }
-    );
+    return NextResponse.json(data, { status: response.status });
 
   } catch (error) {
-    console.error('Error creating consultation:', error);
-
-    // Handle mongoose validation errors
-    if (error.name === 'ValidationError') {
-      const validationErrors = Object.values(error.errors).map(err => err.message);
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Validation failed',
-          details: validationErrors
-        },
-        { status: 400 }
-      );
-    }
-
-    // Handle duplicate email error
-    if (error.code === 11000) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'A consultation request with this email already exists' 
-        },
-        { status: 409 }
-      );
-    }
-
-    // Handle other errors
+    console.error('Error proxying consultation request:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Internal server error. Please try again later.' 
+      {
+        success: false,
+        error: 'Failed to process request. Please try again later.'
       },
       { status: 500 }
     );
   }
 }
 
-// GET - Retrieve consultation requests (for admin use)
+// GET - Retrieve consultation requests (proxy to backend)
 export async function GET(request) {
   try {
-    // Connect to database
-    await connectDB();
-
-    // Get query parameters
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page')) || 1;
-    const limit = parseInt(searchParams.get('limit')) || 10;
-    const status = searchParams.get('status');
-    const inquiryType = searchParams.get('inquiryType');
+    const queryString = searchParams.toString();
 
-    // Build query
-    const query = {};
-    if (status) query.status = status;
-    if (inquiryType) query.inquiryType = inquiryType;
-
-    // Calculate skip value for pagination
-    const skip = (page - 1) * limit;
-
-    // Get consultations with pagination
-    const consultations = await Consultation.find(query)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .select('-__v');
-
-    // Get total count for pagination
-    const total = await Consultation.countDocuments(query);
-
-    return NextResponse.json({
-      success: true,
-      data: consultations,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit)
-      }
+    const response = await fetch(`${BACKEND_URL}/api/consultation?${queryString}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
+    const data = await response.json();
+
+    return NextResponse.json(data, { status: response.status });
+
   } catch (error) {
-    console.error('Error fetching consultations:', error);
+    console.error('Error proxying consultation GET request:', error);
     return NextResponse.json(
       {
         success: false,
@@ -184,70 +60,25 @@ export async function GET(request) {
   }
 }
 
-// PATCH - Update consultation status (admin only)
+// PATCH - Update consultation status (proxy to backend)
 export async function PATCH(request) {
   try {
-    // Connect to database
-    await connectDB();
-
-    // Parse request body
     const body = await request.json();
-    const { id, status } = body;
 
-    // Validate required fields
-    if (!id || !status) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Consultation ID and status are required'
-        },
-        { status: 400 }
-      );
-    }
-
-    // Validate status value
-    const validStatuses = ['new', 'contacted', 'in-progress', 'completed'];
-    if (!validStatuses.includes(status)) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Invalid status. Must be one of: ' + validStatuses.join(', ')
-        },
-        { status: 400 }
-      );
-    }
-
-    // Find and update consultation
-    const consultation = await Consultation.findByIdAndUpdate(
-      id,
-      {
-        status: status,
-        updatedAt: new Date()
+    const response = await fetch(`${BACKEND_URL}/api/consultation`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      {
-        new: true,
-        runValidators: true
-      }
-    );
-
-    if (!consultation) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Consultation not found'
-        },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Consultation status updated successfully',
-      consultation: consultation
+      body: JSON.stringify(body),
     });
 
+    const data = await response.json();
+
+    return NextResponse.json(data, { status: response.status });
+
   } catch (error) {
-    console.error('Error updating consultation status:', error);
+    console.error('Error proxying consultation PATCH request:', error);
     return NextResponse.json(
       {
         success: false,

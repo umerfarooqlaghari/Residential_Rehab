@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Residential Rehab - Real Estate Platform
 
-## Getting Started
+A modern real estate platform built with Next.js frontend and Express.js backend, designed for property sales and investment opportunities.
 
-First, run the development server:
+## Project Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+project-root/
+├── backend/              ← Express.js API server
+│   ├── package.json      ← Backend dependencies
+│   ├── server.js         ← Main server file
+│   ├── api/              ← API routes
+│   ├── models/           ← Database models
+│   ├── lib/              ← Utilities (email, database)
+│   └── README.md         ← Backend documentation
+├── src/
+│   └── app/              ← Next.js App Router (frontend)
+│       └── api/          ← Next.js API routes (proxy to backend)
+├── package.json          ← Frontend dependencies
+└── README.md             ← This file
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Quick Start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Install Dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Frontend:**
+```bash
+npm install
+```
 
-## Learn More
+**Backend:**
+```bash
+cd backend
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Environment Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Frontend (.env):**
+```bash
+cp .env.example .env
+# Configure BACKEND_URL and other frontend variables
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Backend (backend/.env):**
+```bash
+cd backend
+cp .env.example .env
+# Configure MONGODB_URI, SMTP settings, JWT_SECRET, etc.
+```
 
-## Deploy on Vercel
+### 3. Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Run both frontend and backend:**
+```bash
+npm run dev:full
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Or run separately:**
+```bash
+# Terminal 1 - Backend
+npm run dev:backend
+
+# Terminal 2 - Frontend
+npm run dev
+```
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5000](http://localhost:5000)
+
+## Features
+
+- **Frontend**: Next.js 15 with React 19, TypeScript, Tailwind CSS
+- **Backend**: Express.js API with MongoDB, JWT authentication
+- **Email**: Automated notifications via Brevo/Sendinblue
+- **Admin Panel**: Consultation management system
+- **Responsive Design**: Mobile-first approach
+
+## Deployment
+
+### Frontend (Vercel)
+The frontend can be deployed to Vercel. Make sure to:
+1. Set `BACKEND_URL` environment variable to your backend URL
+2. Deploy from the root directory (where package.json is located)
+
+### Backend (Railway/Heroku/etc.)
+Deploy the `backend/` directory as a separate service.
+
+## Documentation
+
+- [Backend API Documentation](./backend/README.md)
+- [Email Setup Guide](./EMAIL_SETUP.md)
+- [MongoDB Setup Guide](./SETUP_MONGODB.md)
