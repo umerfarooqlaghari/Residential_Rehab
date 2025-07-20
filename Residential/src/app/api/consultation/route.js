@@ -68,7 +68,8 @@ export async function POST(request) {
         to: savedConsultation.email,
         name: savedConsultation.name,
         inquiryType: savedConsultation.inquiryType,
-        message: savedConsultation.message || ''
+        message: savedConsultation.message || '',
+        propertyAddress: savedConsultation.propertyAddress || ''
       });
     } catch (emailError) {
       console.error('Failed to send auto-reply email:', emailError);
