@@ -12,15 +12,45 @@ export default function Services() {
     features: ["Quick cash offers", "No repairs needed", "Fast 7-14 day closings", "No realtor fees"]
   };
 
+  const scrollToContact = () => {
+    const element = document.getElementById('contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="services" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-blue-900 mb-4">What We Do</h2>
+          <h2 className="text-4xl font-bold text-blue-900 mb-4 mt-8">What We Do</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
           we buy houses for cash fast           </p>
-        </div>
+        
 
+     
+          <div className="flex flex-col sm:flex-row gap-4 mb-8 mt-8 justify-center items-center">
+            <button
+              onClick={scrollToContact}
+              className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              Get Your Offer Now
+            </button>
+            
+            <button
+              onClick={() => {
+                const element = document.getElementById('about');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-200"
+            >
+              Learn More About Us
+            </button>
+          </div>
+          
+          </div>
         {/* Main Service Section */}
         <div className="max-w-4xl mx-auto mb-16">
           <div className="bg-white p-12 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">

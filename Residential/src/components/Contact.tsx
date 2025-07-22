@@ -247,7 +247,7 @@ export default function Contact() {
                   </svg>
                   <div>
                     <h4 className="font-semibold text-gray-900">Call Us</h4>
-                    <p className="text-gray-600">(555) 123-4567</p>
+                    <p className="text-gray-600">561-889-6041</p>
                     <p className="text-sm text-gray-500">Available 7 days a week</p>
                   </div>
                 </div>
@@ -258,7 +258,7 @@ export default function Contact() {
                   </svg>
                   <div>
                     <h4 className="font-semibold text-gray-900">Email Us</h4>
-                    <p className="text-gray-600">sales@Residentialrealestate.com</p>
+                    <p className="text-gray-600">sales@residentialrehabgroup.com</p>
                     <p className="text-sm text-gray-500">We respond within 24 hours</p>
                   </div>
                 </div>
