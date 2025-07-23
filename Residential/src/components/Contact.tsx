@@ -262,18 +262,6 @@ export default function Contact() {
                     <p className="text-sm text-gray-500">We respond within 24 hours</p>
                   </div>
                 </div>
-
-                <div className="flex items-start">
-                  <svg className="w-6 h-6 text-blue-600 mr-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Visit Us</h4>
-                    <p className="text-gray-600">South Florida East Coast</p>
-                    <p className="text-sm text-gray-500">Serving the entire region</p>
-                  </div>
-                </div>
               </div>
             </div>
 
